@@ -42,3 +42,4 @@ class Swiper {
 
 export default Swiper
 
+new Swiper('#player')
