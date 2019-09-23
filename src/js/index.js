@@ -103,6 +103,12 @@ class Player {
         this.$('.panel-lyrics .container').appendChild(fragment)
 
     }
+
+    playSong() {
+        this.audio.oncanplaythrought = () => this.audio.play()  //oncanplaythrough 事件在视频/音频(audio/video)可以正常播放且无需停顿和缓冲时触发。
+
+    }
+
     formateTime(secondsTotal) {
         let minutes = parseInt(secondsTotal / 60)
         minutes = minutes >= 10 ? '' + minutes : '0' + minutes
@@ -110,6 +116,7 @@ class Player {
         seconds = seconds >= 10 ? '' + seconds : '0' + seconds
         return minutes + ':' + seconds
     }
+
 
 
 
@@ -138,8 +145,19 @@ class Player {
             }
         }
 
+        this.$('.btn-pre').onclick = function () {
+            console.log('pre')
+            self.currentIndex = (self.songList.length + self.currentIndex - 1) % self.songList.length
+            this.loadSong()
+            self.playSong()
+        }
+
+        this.$('.btn-next').onclick = function () {
+            self.currentIndex = (self.currentIndex + 1) % self.songList.length
+            self.loadSong()
+            self.playSong()
+        }
     }
-}
 
 
 
