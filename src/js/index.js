@@ -76,9 +76,31 @@ class Player {
         lyrics.split(/\n/) // ["[00:00.343] fdf", "时间 歌词"]
             .filter(str => str.match(/\[.+?\]/))  //过滤出来所有的【】 创建一个数组
             .forEach(line => {
-
+                let str = line.replace(/\[.+?\]/g, '')// 去掉【】
+                line.match(/\[.+?\]/g).forEach(t => {
+                    t = t.replace(/\[.+?\]/g, '')
+                    let milliseconds = parseInt(t.slice(0, 2)) * 60 * 1000 + parseInt(t.slice(3, 5)) * 1000 + parseInt(t.slice(6))
+                    lyricsArr.push([milliseconds, str])
+                })
             })
 
+        lyricsSrr.filter(line => {
+            line[1].trim() !== ''
+        }).sort((v1, v2) => {
+            if (v1[0] > v2[0]) {
+                return 1
+            } else {
+                return -1
+            }
+        }).forEach(line => {
+            let node = document.createElement('P')
+            node.setAttribute('data-time', line[0])
+            node.innerText = line[1]
+            fragment.appendChild(node)  //添加到虚拟dom
+        })
+        this.$('.panel-lyrics .container').innerHTML = ''
+        //虚拟dom 添加到页面
+        this.$('.panel-lyrics .container').appendChild(fragment)
 
     }
     formateTime(secondsTotal) {
@@ -100,5 +122,28 @@ class Player {
         //用户滑动
         //歌词显示、进度条都根据audio时间变化 
 
+        let self = this  //为了确保是一个this
+        this.$('btn-play-pause').onclick = function () { //点击暂停按钮 改变状态和类名样式为pause
+            if (this.classList.contains('playing')) {
+                self.audio.pause()
+                this.classList.remove('playing')
+                this.classList.add('pause')
+                this.querySelector('use').setAttribute('xlink:href', '#icon-play')
+            } else if (this.classList.contains('pause')) {
+                self.audio.play()
+                this.classList.remove('pause')
+                this.classList.add('playing')
+                this.querySelector('use').setAttribute('xlink:href', '#icon-pause')
+
+            }
+        }
+
     }
 }
+
+
+
+
+
+
+
