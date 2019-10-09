@@ -182,7 +182,16 @@ class Player {
 
     }
     locateLyric() { //显示与audio相对应的歌词
-
+        cosnole.log('locateLyric')
+        let currentTime = this.audio.currentTime * 1000
+        let nextLineTime = this.lyricsArr[this.lyricIndex + 1][0]
+        if (currentTime > nextLineTime && this.lyricIndex < this.lyricsArr.length - 1) {
+            this.lyricIndex++
+            let node = this.$('[data-time="' + this.lyricsArr[this.lyricIndex][0] + '"]')
+            if (node) this.setLyricToCenter(node)
+            this.$$('.panel-effect .lyric p')[0].innerText = this.lyricsArr[this.lyricIndex][1]
+            this.$$('.panel-effect .lyric p')[1].innerText = this.lyricsArr[this.lyricIndex + 1] ? this.lyricsArr[this.lyricIndex + 1][1] : ''
+        }
 
     }
     setProgressBar() {
