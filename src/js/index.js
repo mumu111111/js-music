@@ -157,11 +157,55 @@ class Player {
             self.loadSong()
             self.playSong()
         }
+
+        this.audio.ontimeupdate = function () { //事件对象实例在当前播放位置改变时执行
+            //改变audio 位置后，需要去改变 歌词显示  时间文字显示 进度条显示
+            self.locateLyric()
+            self.setProgressBar()
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+    locateLyric() { //显示与audio相对应的歌词
+
+
+    }
+    setProgressBar() {
+        //改变 滚动条  会改变什么？ 滚动条进度 显示的对应时间也变了
+        console.log('set progress')
+        let percent = (this.audio.currentTime * 100 / this.audio.duration) + '%'
+        //当前位置
+        console.log(percent)
+        //改变页面显示进度
+        this.$('.bar .progress').style.width = percent
+        //改变当前显示的time
+        this.$('.time-start').innerText = this.formateTime(this.audio.currentTime)
+    }
+    formateTime(time) {
+        let minutes = parseInt(time / 60)
+        minutes = minutes >= 10 ? '' + minutes : '0' + minutes
+        let seconds = parseInt(time % 60)
+        seconds = seconds >= 10 ? '' + seconds : '0' + seconds
+        return minutes + ':' + seconds
     }
 
 
 
 
 
-
-
+}
