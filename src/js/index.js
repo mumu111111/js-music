@@ -33,10 +33,6 @@ class Player {
                 //渲染到页面
                 this.loadSong()
             })
-
-
-
-
     }
 
     //渲染到页面
@@ -54,13 +50,13 @@ class Player {
     }
     //加载歌词  在首次加载首个歌曲  上、下一首会用到
     loadLyric() {
-        fetach(this.songList[this.currentIndex].lyric)
+        fetch(this.songList[this.currentIndex].lyric)
             .then(res => res.json())
             .then(data => {
                 console.log(data.lrc.lyric)
                 //加载完歌词后 应该放在该放的DOM
                 this.setLyrics(data.lrc.lyric)
-                window.lyrics = data.lrx.lyric //?????
+                window.lyrics = data.lrc.lyric
             })
 
 
@@ -68,7 +64,7 @@ class Player {
     //设置歌词
     setLyrics(lyrics) {
         this.lyricIndex = 0 //歌词下标
-        let fragment = document.createDocumentFragement() //虚拟dom
+        let fragment = document.createDocumentFragment() //虚拟dom
         let lyricsArr = []
         this.lyricsArr = lyricsArr
 
@@ -84,7 +80,7 @@ class Player {
                 })
             })
 
-        lyricsSrr.filter(line => {
+        lyricsArr.filter(line => {
             line[1].trim() !== ''
         }).sort((v1, v2) => {
             if (v1[0] > v2[0]) {
@@ -117,20 +113,14 @@ class Player {
         return minutes + ':' + seconds
     }
 
-
-
-
-
-
-
-    bind() {// 绑定事件 类似于 mounted
+    bind() {// 绑定事件 类似于 mountedF$
         //点击 播放 暂停
         //上一曲 下一曲
         //用户滑动
         //歌词显示、进度条都根据audio时间变化 
 
         let self = this  //为了确保是一个this
-        this.$('btn-play-pause').onclick = function () { //点击暂停按钮 改变状态和类名样式为pause
+        this.$('.btn-play-pause').onclick = function () { //点击暂停按钮 改变状态和类名样式为pause
             if (this.classList.contains('playing')) {
                 self.audio.pause()
                 this.classList.remove('playing')
@@ -164,25 +154,9 @@ class Player {
             self.setProgressBar()
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
     locateLyric() { //显示与audio相对应的歌词
-        cosnole.log('locateLyric')
+        console.log('locateLyric')
         let currentTime = this.audio.currentTime * 1000
         let nextLineTime = this.lyricsArr[this.lyricIndex + 1][0]
         if (currentTime > nextLineTime && this.lyricIndex < this.lyricsArr.length - 1) {
@@ -212,9 +186,6 @@ class Player {
         seconds = seconds >= 10 ? '' + seconds : '0' + seconds
         return minutes + ':' + seconds
     }
-
-
-
-
-
 }
+
+window.p = new Player('#player')
