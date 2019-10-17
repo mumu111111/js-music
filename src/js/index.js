@@ -138,7 +138,7 @@ class Player {
         this.$('.btn-pre').onclick = function () {
             console.log('pre')
             self.currentIndex = (self.songList.length + self.currentIndex - 1) % self.songList.length
-            this.loadSong()
+            self.loadSong()
             self.playSong()
         }
 
@@ -178,13 +178,6 @@ class Player {
         this.$('.bar .progress').style.width = percent
         //改变当前显示的time
         this.$('.time-start').innerText = this.formateTime(this.audio.currentTime)
-    }
-    formateTime(time) {
-        let minutes = parseInt(time / 60)
-        minutes = minutes >= 10 ? '' + minutes : '0' + minutes
-        let seconds = parseInt(time % 60)
-        seconds = seconds >= 10 ? '' + seconds : '0' + seconds
-        return minutes + ':' + seconds
     }
 }
 
