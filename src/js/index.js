@@ -1,4 +1,3 @@
-console.log('hello  饥人谷sss')
 import icons from './icons.js';
 import Swiper from './swiper.js'
 
@@ -17,7 +16,6 @@ class Player {
 
     this.start()
     this.bind()
-    //https://jirengu.github.io/data-mock/huawei-music/music-list.json
   }
 
   start() {
@@ -48,21 +46,20 @@ class Player {
     }
 
     this.$('.btn-pre').onclick = function () {
-      console.log('pre')
       self.currentIndex = (self.songList.length + self.currentIndex - 1) % self.songList.length
       self.loadSong()
-      self.playSong()
+      self.playSong(this)
+
     }
 
     this.$('.btn-next').onclick = function () {
-      console.log('点击对象' + this)
       self.currentIndex = (self.currentIndex + 1) % self.songList.length
       self.loadSong()
       self.playSong(this)
     }
 
     this.audio.ontimeupdate = function () {
-      console.log(parseInt(self.audio.currentTime * 1000))
+      // console.log(parseInt(self.audio.currentTime * 1000))
       self.locateLyric()
       self.setProgerssBar()
     }
@@ -92,10 +89,8 @@ class Player {
     this.loadLyric()
   }
 
-  playSong(node) {
-
+  playSong(node) { //解决切换时按钮问题
     this.audio.oncanplaythrough = () => {
-      console.dir(this)
       if (node.classList.contains('pause')) {
         this.audio.play()
         node.classList.remove('pause')
@@ -103,15 +98,13 @@ class Player {
         node.querySelector('use').setAttribute('xlink:href', '#icon-pause')
       }
     }
-
   }
-
 
   loadLyric() {
     fetch(this.songList[this.currentIndex].lyric)
       .then(res => res.json())
       .then(data => {
-        console.log(data.lrc.lyric)
+        // console.log(data.lrc.lyric)
         this.setLyrics(data.lrc.lyric)
         window.lyrics = data.lrc.lyric
       })
@@ -175,12 +168,12 @@ class Player {
   }
 
   setProgerssBar() {
-    console.log('set setProgerssBar')
+    // console.log('set setProgerssBar')
     let percent = (this.audio.currentTime * 100 / this.audio.duration) + '%'
-    console.log(percent)
+    // console.log(percent)
     this.$('.bar .progress').style.width = percent
     this.$('.time-start').innerText = this.formateTime(this.audio.currentTime)
-    console.log(this.$('.bar .progress').style.width)
+    // console.log(this.$('.bar .progress').style.width)
   }
 
   formateTime(secondsTotal) {
