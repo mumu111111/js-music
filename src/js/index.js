@@ -22,7 +22,6 @@ class Player {
     fetch('https://jirengu.github.io/data-mock/huawei-music/music-list.json')
       .then(res => res.json())
       .then(data => {
-        console.log('歌曲列表集合' + data)
         this.songList = data
 
         this.loadSong()
@@ -112,7 +111,6 @@ class Player {
 
 
   locateLyric() {
-    console.log('locateLyric')
     let currentTime = this.audio.currentTime * 1000
     let nextLineTime = this.lyricsArr[this.lyricIndex + 1][0]
     if (currentTime > nextLineTime && this.lyricIndex < this.lyricsArr.length - 1) {
@@ -159,7 +157,6 @@ class Player {
   }
 
   setLyricToCenter(node) {
-    console.log(node)
     let translateY = node.offsetTop - this.$('.panel-lyrics').offsetHeight / 2
     translateY = translateY > 0 ? translateY : 0
     this.$('.panel-lyrics .container').style.transform = `translateY(-${translateY}px)`
