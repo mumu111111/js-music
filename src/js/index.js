@@ -47,14 +47,14 @@ class Player {
     this.$('.btn-pre').onclick = function () {
       self.currentIndex = (self.songList.length + self.currentIndex - 1) % self.songList.length
       self.loadSong()
-      self.playSong(this)
+      self.playSong()
 
     }
 
     this.$('.btn-next').onclick = function () {
       self.currentIndex = (self.currentIndex + 1) % self.songList.length
       self.loadSong()
-      self.playSong(this)
+      self.playSong()
     }
 
     this.audio.ontimeupdate = function () {
@@ -88,13 +88,17 @@ class Player {
     this.loadLyric()
   }
 
-  playSong(node) { //解决切换时按钮问题
+  playSong() { //解决切换时按钮问题
     this.audio.oncanplaythrough = () => {
-      if (node.classList.contains('pause')) {
-        this.audio.play()
+      let node = this.$('.btn-play-pause')
+      if (node.classList.contains('pause') || node.classList.contains('playing')) {
         node.classList.remove('pause')
-        node.classList.add('playing')
+        node.classList.remove('playing')
+
+        node.classList.add('pause')
         node.querySelector('use').setAttribute('xlink:href', '#icon-pause')
+        this.audio.play()
+
       }
     }
   }
